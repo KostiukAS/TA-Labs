@@ -8,9 +8,15 @@ namespace TALab3
         {
             InitializeComponent();
         }
+        public static int indexFromSecondForm;
 
         LinkedList studentList = new();
         LinkedList listOfQuestions = new();
+        FirstMethod head = new();
+        FirstMethod next_point = new();
+
+        bool isFirstMethod = false;
+        bool isSecondMethod = false;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -87,6 +93,8 @@ namespace TALab3
             listBoxSurvey.Items.Clear();
             listBoxQuestions.Items.Clear();
             LinkedList.StrClear(listOfQuestions);
+            isFirstMethod = true;
+            isSecondMethod = false;
 
             if (studentList.numberOfElements == 0)
             {
@@ -98,7 +106,8 @@ namespace TALab3
 
             try
             {
-                FirstMethod next_point = new FirstMethod(studentList.list[0].information, listOfQuestions.listString[0], listOfQuestions.listString[1]);
+                head = new FirstMethod(studentList.list[0].information, listOfQuestions.listString[0], listOfQuestions.listString[1]);
+                next_point = head;
 
                 for (int i = 0; i < studentList.numberOfElements; i++)
                 {
@@ -133,6 +142,8 @@ namespace TALab3
             listBoxSurvey.Items.Clear();
             listBoxQuestions.Items.Clear();
             LinkedList.StrClear(listOfQuestions);
+            isFirstMethod = false;
+            isSecondMethod = true;
 
             if (studentList.numberOfElements == 0)
             {
@@ -172,6 +183,180 @@ namespace TALab3
             listBoxQuestions.Items.Clear();
             listBoxSurvey.Items.Clear();
             LinkedList.StrClear(listOfQuestions);
+            isFirstMethod = false;
+            isSecondMethod = false;
+        }
+
+        private void btbAddStudent_Click(object sender, EventArgs e)
+        {
+            if (listBoxSurvey.Items.Count == listBoxStudents.Items.Count)
+            {
+                MessageBox.Show("You can`t add new elements!");
+                return;
+            }
+            else if (studentList.numberOfElements == 0)
+            {
+                MessageBox.Show("Generate List of students firstly!");
+            }
+
+            if (isFirstMethod)
+            {
+                Form2 f2 = new Form2();
+                f2.numberOfStudentsInSurvey = listBoxSurvey.Items.Count;
+                f2.ShowDialog();
+
+                if (indexFromSecondForm != 0)
+                {
+                    FirstMethod newObj = new();
+                    
+                    for (int i = 0; i < listBoxStudents.Items.Count; i++)
+                    {
+                        int iter = listBoxSurvey.Items.Count;
+
+                        for (int j = 0; j < listBoxSurvey.Items.Count; j++)
+                        {
+                            if (listBoxStudents.Items[i].ToString() == listBoxSurvey.Items[j].ToString())
+                            {
+                                break;
+                            }
+                            iter--;
+                        }
+                        if (iter == 0)
+                        {
+                            newObj.PIB = listBoxStudents.Items[i].ToString();
+                            newObj.FirstQuestion = listOfQuestions.listString[indexFromSecondForm - 1];
+                            newObj.SecondQuestion = listOfQuestions.listString[indexFromSecondForm - 1];
+                            FirstMethod.AddAt(head, newObj, indexFromSecondForm - 1);
+                            listBoxSurvey.Items.Insert(indexFromSecondForm - 1, newObj.PIB);
+                            listBoxQuestions.Items.Insert(indexFromSecondForm - 1, newObj.FirstQuestion + " " + newObj.SecondQuestion);
+                            indexFromSecondForm = 0;
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else if (isSecondMethod)
+            {
+                Form2 f2 = new Form2();
+                f2.numberOfStudentsInSurvey = listBoxSurvey.Items.Count;
+                f2.ShowDialog();
+
+                if (indexFromSecondForm != 0)
+                {
+                    Node newElem = new();
+
+                    for (int i = 0; i < listBoxStudents.Items.Count; i++)
+                    {
+                        int iter = listBoxSurvey.Items.Count;
+
+                        for (int j = 0; j < listBoxSurvey.Items.Count; j++)
+                        {
+                            if (listBoxStudents.Items[i].ToString() == listBoxSurvey.Items[j].ToString())
+                            {
+                                break;
+                            }
+                            iter--;
+                        }
+                        if (iter == 0)
+                        {
+                            newElem.information = listBoxStudents.Items[i].ToString();
+                            newElem.firstQuestion = listOfQuestions.listString[indexFromSecondForm - 1];
+                            newElem.secondQuestion = listOfQuestions.listString[indexFromSecondForm - 1];
+                            if (indexFromSecondForm == 1)
+                            {
+                                newElem.pointer = studentList.list[indexFromSecondForm];
+                            }
+                            else if (indexFromSecondForm == (listBoxSurvey.Items.Count + 1))
+                            {
+                                newElem.pointer = null;
+                                studentList.list[indexFromSecondForm - 2].pointer = newElem;
+                                newElem.firstQuestion = listOfQuestions.listString[indexFromSecondForm];
+                                newElem.secondQuestion = listOfQuestions.listString[indexFromSecondForm + 1];
+                            }
+                            else
+                            {
+                                newElem.pointer = studentList.list[indexFromSecondForm];
+                                studentList.list[indexFromSecondForm - 2].pointer = newElem;
+                            }                            
+                            LinkedList.AddAt(studentList, newElem, indexFromSecondForm - 1);
+                            listBoxSurvey.Items.Insert(indexFromSecondForm - 1, newElem.information);
+                            listBoxQuestions.Items.Insert(indexFromSecondForm - 1, newElem.firstQuestion + " " + newElem.secondQuestion);
+                            indexFromSecondForm = 0;
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Generate List of survey firstly!");
+            }
+        }
+
+        private void btnRemoveStudent_Click(object sender, EventArgs e)
+        {
+            if (listBoxSurvey.SelectedItem == null)
+            {
+                MessageBox.Show("Item is not choosen!");
+                return;
+            }
+
+            if (isFirstMethod)
+            {
+                int index = listBoxSurvey.SelectedIndex;
+
+                try
+                {
+                    FirstMethod.RemoveAt(head, index, listBoxSurvey.Items.Count);
+                    listBoxSurvey.Items.RemoveAt(index);
+                    listBoxQuestions.Items.RemoveAt(index);                    
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    MessageBox.Show("Exception: " + ex);
+                }
+            }
+            else if (isSecondMethod)
+            {
+                int index = listBoxSurvey.SelectedIndex;
+                int lenOfList = listBoxSurvey.Items.Count;
+
+                try
+                {
+                    listBoxSurvey.Items.RemoveAt(index);
+                    listBoxQuestions.Items.RemoveAt(index);
+                    LinkedList.RemoveAt(studentList, index);
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    MessageBox.Show("Exception: " + ex);
+                }
+
+                if (index == 0)
+                {
+                    return;
+                }
+                else if (index == (lenOfList - 1))
+                {
+                    studentList.list[index - 1].pointer = null;
+                }
+                else
+                {
+                    studentList.list[index - 1].pointer = studentList.list[index];
+                }
+            }
+            else
+            {
+                MessageBox.Show("Something went wrong!");
+            }
         }
     }
 }
