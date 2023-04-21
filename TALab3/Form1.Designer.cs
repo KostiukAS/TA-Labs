@@ -41,6 +41,8 @@
             btnClearSurveyList = new Button();
             labelOfQuestions = new Label();
             listBoxQuestions = new ListBox();
+            btbAddStudent = new Button();
+            btnRemoveStudent = new Button();
             SuspendLayout();
             // 
             // labelOfStudentList
@@ -170,11 +172,33 @@
             listBoxQuestions.Size = new Size(299, 484);
             listBoxQuestions.TabIndex = 14;
             // 
+            // btbAddStudent
+            // 
+            btbAddStudent.Location = new Point(692, 569);
+            btbAddStudent.Name = "btbAddStudent";
+            btbAddStudent.Size = new Size(299, 29);
+            btbAddStudent.TabIndex = 15;
+            btbAddStudent.Text = "Add student";
+            btbAddStudent.UseVisualStyleBackColor = true;
+            btbAddStudent.Click += btbAddStudent_Click;
+            // 
+            // btnRemoveStudent
+            // 
+            btnRemoveStudent.Location = new Point(692, 616);
+            btnRemoveStudent.Name = "btnRemoveStudent";
+            btnRemoveStudent.Size = new Size(299, 29);
+            btnRemoveStudent.TabIndex = 16;
+            btnRemoveStudent.Text = "Remove student";
+            btnRemoveStudent.UseVisualStyleBackColor = true;
+            btnRemoveStudent.Click += btnRemoveStudent_Click;
+            // 
             // TALab3
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1164, 809);
+            ClientSize = new Size(1024, 795);
+            Controls.Add(btnRemoveStudent);
+            Controls.Add(btbAddStudent);
             Controls.Add(listBoxQuestions);
             Controls.Add(labelOfQuestions);
             Controls.Add(btnClearSurveyList);
@@ -188,6 +212,7 @@
             Controls.Add(btnGroup1);
             Controls.Add(listBoxStudents);
             Controls.Add(labelOfStudentList);
+            MaximizeBox = false;
             Name = "TALab3";
             Text = "TA Lab 3";
             Load += Form1_Load;
@@ -210,5 +235,7 @@
         private Button btnClearSurveyList;
         private Label labelOfQuestions;
         private ListBox listBoxQuestions;
+        private Button btbAddStudent;
+        private Button btnRemoveStudent;
     }
 }
