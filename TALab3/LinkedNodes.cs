@@ -1,27 +1,27 @@
 ﻿namespace TALab3.Data
 {
-    public class FirstMethod
+    public class LinkedNodes
     {
         public string PIB;
         public string FirstQuestion;
         public string SecondQuestion;
-        public FirstMethod? next;
+        public LinkedNodes? next;
 
-        public FirstMethod(string _PIB, string _FirstQuestion, string _SecondQuestion)
+        public LinkedNodes(string _PIB, string _FirstQuestion, string _SecondQuestion)
         {
             PIB = _PIB;
             FirstQuestion = _FirstQuestion;
             SecondQuestion = _SecondQuestion;
             next = null;
         }
-        public FirstMethod() 
+        public LinkedNodes() 
         { 
 
         }
 
-        public static void Add(FirstMethod head, FirstMethod newObj)
+        public static void Add(LinkedNodes head, LinkedNodes newObj)
         {
-            FirstMethod next_point = head;
+            LinkedNodes next_point = head;
 
             while (next_point.next != null)
             {
@@ -31,7 +31,7 @@
             next_point.next.next = null;
         }
 
-        public static void AddAt(FirstMethod head, FirstMethod newObj, int index)
+        public static void AddAt(LinkedNodes head, LinkedNodes newObj, int index)
         {
             if (index < 0)
             {
@@ -44,7 +44,7 @@
             }
             else
             {
-                FirstMethod next_point = head;
+                LinkedNodes next_point = head;
                 
                 for (int i = 0; i < (index - 1); i++)
                 {
@@ -55,9 +55,9 @@
             }
         }
         
-        public static void RemoveLast(FirstMethod head)
+        public static void RemoveLast(LinkedNodes head)
         {
-            FirstMethod next_point = head;
+            LinkedNodes next_point = head;
 
             while (next_point.next.next != null) 
             {
@@ -66,7 +66,7 @@
             next_point.next = null;
         }
 
-        public static void RemoveAt(FirstMethod head, int index, int numOfElem)
+        public static void RemoveAt(LinkedNodes head, int index, int numOfElem)
         {
             if (index < 0)
             {
@@ -78,11 +78,11 @@
             }
             else if (index == (numOfElem - 1))
             {
-                FirstMethod.RemoveLast(head);
+                LinkedNodes.RemoveLast(head);
             }
             else
             {
-                FirstMethod next_point = head;
+                LinkedNodes next_point = head;
                 
                 for (int i = 0; i < (index - 1); i++)
                 {

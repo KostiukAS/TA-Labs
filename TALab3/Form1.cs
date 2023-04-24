@@ -12,8 +12,8 @@ namespace TALab3
 
         LinkedListNode studentList = new();
         LinkedListString listOfQuestions = new();
-        FirstMethod head = new();
-        FirstMethod next_point = new();
+        LinkedNodes head = new();
+        LinkedNodes next_point = new();
 
         bool isFirstMethod = false;
         bool isSecondMethod = false;
@@ -106,7 +106,7 @@ namespace TALab3
 
             try
             {
-                head = new FirstMethod(studentList.list[0].information, listOfQuestions.list[0], listOfQuestions.list[1]);
+                head = new LinkedNodes(studentList.list[0].information, listOfQuestions.list[0], listOfQuestions.list[1]);
                 next_point = head;
 
                 for (int i = 0; i < studentList.length; i++)
@@ -119,7 +119,7 @@ namespace TALab3
                     }
                     else
                     {
-                        next_point.next = new FirstMethod(studentList.list[i].information, next_point.SecondQuestion, listOfQuestions.list[i + 1]);
+                        next_point.next = new LinkedNodes(studentList.list[i].information, next_point.SecondQuestion, listOfQuestions.list[i + 1]);
                         next_point = next_point.next;
                         if (i == (studentList.length - 1))
                         {
@@ -207,7 +207,7 @@ namespace TALab3
 
                 if (indexFromSecondForm != 0)
                 {
-                    FirstMethod newObj = new();
+                    LinkedNodes newObj = new();
                     
                     for (int i = 0; i < listBoxStudents.Items.Count; i++)
                     {
@@ -226,7 +226,7 @@ namespace TALab3
                             newObj.PIB = listBoxStudents.Items[i].ToString();
                             newObj.FirstQuestion = listOfQuestions.list[indexFromSecondForm - 1];
                             newObj.SecondQuestion = listOfQuestions.list[indexFromSecondForm - 1];
-                            FirstMethod.AddAt(head, newObj, indexFromSecondForm - 1);
+                            LinkedNodes.AddAt(head, newObj, indexFromSecondForm - 1);
                             listBoxSurvey.Items.Insert(indexFromSecondForm - 1, newObj.PIB);
                             listBoxQuestions.Items.Insert(indexFromSecondForm - 1, newObj.FirstQuestion + " " + newObj.SecondQuestion);
                             indexFromSecondForm = 0;
@@ -315,7 +315,7 @@ namespace TALab3
 
                 try
                 {
-                    FirstMethod.RemoveAt(head, index, listBoxSurvey.Items.Count);
+                    LinkedNodes.RemoveAt(head, index, listBoxSurvey.Items.Count);
                     listBoxSurvey.Items.RemoveAt(index);
                     listBoxQuestions.Items.RemoveAt(index);                    
                 }
