@@ -10,8 +10,8 @@ namespace TALab3
         }
         public static int indexFromSecondForm;
 
-        LinkedList studentList = new();
-        LinkedList listOfQuestions = new();
+        LinkedListNode studentList = new();
+        LinkedListString listOfQuestions = new();
         FirstMethod head = new();
         FirstMethod next_point = new();
 
@@ -25,13 +25,13 @@ namespace TALab3
         private void btnGroup1_Click(object sender, EventArgs e)
         {
             listBoxStudents.Items.Clear();
-            LinkedList.Clear(studentList);
+            LinkedListNode.Clear(studentList);
 
             WorkWithLists.ReadListOfStudents("..//..//..//Group 1.txt", studentList);
 
             try
             {
-                for (int i = 0; i < studentList.numberOfElements; i++)
+                for (int i = 0; i < studentList.length; i++)
                 {
                     listBoxStudents.Items.Add(studentList.list[i].information);
                 }
@@ -45,13 +45,13 @@ namespace TALab3
         private void btnGroup2_Click(object sender, EventArgs e)
         {
             listBoxStudents.Items.Clear();
-            LinkedList.Clear(studentList);
+            LinkedListNode.Clear(studentList);
 
             WorkWithLists.ReadListOfStudents("..//..//..//Group 2.txt", studentList);
 
             try
             {
-                for (int i = 0; i < studentList.numberOfElements; i++)
+                for (int i = 0; i < studentList.length; i++)
                 {
                     listBoxStudents.Items.Add(studentList.list[i].information);
                 }
@@ -65,13 +65,13 @@ namespace TALab3
         private void btnGroup3_Click(object sender, EventArgs e)
         {
             listBoxStudents.Items.Clear();
-            LinkedList.Clear(studentList);
+            LinkedListNode.Clear(studentList);
 
             WorkWithLists.ReadListOfStudents("..//..//..//Group 3.txt", studentList);
 
             try
             {
-                for (int i = 0; i < studentList.numberOfElements; i++)
+                for (int i = 0; i < studentList.length; i++)
                 {
                     listBoxStudents.Items.Add(studentList.list[i].information);
                 }
@@ -85,18 +85,18 @@ namespace TALab3
         private void btnClearListOfStudents_Click(object sender, EventArgs e)
         {
             listBoxStudents.Items.Clear();
-            LinkedList.Clear(studentList);
+            LinkedListNode.Clear(studentList);
         }
 
         private void btnFirstMethod_Click(object sender, EventArgs e)
         {
             listBoxSurvey.Items.Clear();
             listBoxQuestions.Items.Clear();
-            LinkedList.StrClear(listOfQuestions);
+            LinkedListString.Clear(listOfQuestions);
             isFirstMethod = true;
             isSecondMethod = false;
 
-            if (studentList.numberOfElements == 0)
+            if (studentList.length == 0)
             {
                 MessageBox.Show("List of students is empty!");
                 return;
@@ -106,10 +106,10 @@ namespace TALab3
 
             try
             {
-                head = new FirstMethod(studentList.list[0].information, listOfQuestions.listString[0], listOfQuestions.listString[1]);
+                head = new FirstMethod(studentList.list[0].information, listOfQuestions.list[0], listOfQuestions.list[1]);
                 next_point = head;
 
-                for (int i = 0; i < studentList.numberOfElements; i++)
+                for (int i = 0; i < studentList.length; i++)
                 {
                     if (i == 0)
                     {
@@ -119,9 +119,9 @@ namespace TALab3
                     }
                     else
                     {
-                        next_point.next = new FirstMethod(studentList.list[i].information, next_point.SecondQuestion, listOfQuestions.listString[i + 1]);
+                        next_point.next = new FirstMethod(studentList.list[i].information, next_point.SecondQuestion, listOfQuestions.list[i + 1]);
                         next_point = next_point.next;
-                        if (i == (studentList.numberOfElements - 1))
+                        if (i == (studentList.length - 1))
                         {
                             next_point.next = null;
                         }
@@ -141,11 +141,11 @@ namespace TALab3
         {
             listBoxSurvey.Items.Clear();
             listBoxQuestions.Items.Clear();
-            LinkedList.StrClear(listOfQuestions);
+            LinkedListString.Clear(listOfQuestions);
             isFirstMethod = false;
             isSecondMethod = true;
 
-            if (studentList.numberOfElements == 0)
+            if (studentList.length == 0)
             {
                 MessageBox.Show("List of students is empty!");
                 return;
@@ -153,16 +153,16 @@ namespace TALab3
 
             WorkWithLists.generateArrayOfQuestions(listOfQuestions);
 
-            for (int i = 0; i < studentList.numberOfElements; i++)
+            for (int i = 0; i < studentList.length; i++)
             {
-                studentList.list[i].secondQuestion = listOfQuestions.listString[i + 1];
+                studentList.list[i].secondQuestion = listOfQuestions.list[i + 1];
 
                 if (i == 0)
                 {
-                    studentList.list[i].firstQuestion = listOfQuestions.listString[i];
+                    studentList.list[i].firstQuestion = listOfQuestions.list[i];
                     studentList.list[i].pointer = studentList.list[i + 1];
                 }
-                else if (i == (studentList.numberOfElements - 1))
+                else if (i == (studentList.length - 1))
                 {
                     studentList.list[i].firstQuestion = studentList.list[i - 1].secondQuestion;
                     studentList.list[i].pointer = null;
@@ -182,7 +182,7 @@ namespace TALab3
         {
             listBoxQuestions.Items.Clear();
             listBoxSurvey.Items.Clear();
-            LinkedList.StrClear(listOfQuestions);
+            LinkedListString.Clear(listOfQuestions);
             isFirstMethod = false;
             isSecondMethod = false;
         }
@@ -194,7 +194,7 @@ namespace TALab3
                 MessageBox.Show("You can`t add new elements!");
                 return;
             }
-            else if (studentList.numberOfElements == 0)
+            else if (studentList.length == 0)
             {
                 MessageBox.Show("Generate List of students firstly!");
             }
@@ -224,8 +224,8 @@ namespace TALab3
                         if (iter == 0)
                         {
                             newObj.PIB = listBoxStudents.Items[i].ToString();
-                            newObj.FirstQuestion = listOfQuestions.listString[indexFromSecondForm - 1];
-                            newObj.SecondQuestion = listOfQuestions.listString[indexFromSecondForm - 1];
+                            newObj.FirstQuestion = listOfQuestions.list[indexFromSecondForm - 1];
+                            newObj.SecondQuestion = listOfQuestions.list[indexFromSecondForm - 1];
                             FirstMethod.AddAt(head, newObj, indexFromSecondForm - 1);
                             listBoxSurvey.Items.Insert(indexFromSecondForm - 1, newObj.PIB);
                             listBoxQuestions.Items.Insert(indexFromSecondForm - 1, newObj.FirstQuestion + " " + newObj.SecondQuestion);
@@ -264,8 +264,8 @@ namespace TALab3
                         if (iter == 0)
                         {
                             newElem.information = listBoxStudents.Items[i].ToString();
-                            newElem.firstQuestion = listOfQuestions.listString[indexFromSecondForm - 1];
-                            newElem.secondQuestion = listOfQuestions.listString[indexFromSecondForm - 1];
+                            newElem.firstQuestion = listOfQuestions.list[indexFromSecondForm - 1];
+                            newElem.secondQuestion = listOfQuestions.list[indexFromSecondForm - 1];
                             if (indexFromSecondForm == 1)
                             {
                                 newElem.pointer = studentList.list[indexFromSecondForm];
@@ -274,15 +274,15 @@ namespace TALab3
                             {
                                 newElem.pointer = null;
                                 studentList.list[indexFromSecondForm - 2].pointer = newElem;
-                                newElem.firstQuestion = listOfQuestions.listString[indexFromSecondForm];
-                                newElem.secondQuestion = listOfQuestions.listString[indexFromSecondForm + 1];
+                                newElem.firstQuestion = listOfQuestions.list[indexFromSecondForm];
+                                newElem.secondQuestion = listOfQuestions.list[indexFromSecondForm + 1];
                             }
                             else
                             {
                                 newElem.pointer = studentList.list[indexFromSecondForm];
                                 studentList.list[indexFromSecondForm - 2].pointer = newElem;
                             }                            
-                            LinkedList.AddAt(studentList, newElem, indexFromSecondForm - 1);
+                            LinkedListNode.AddAt(studentList, newElem, indexFromSecondForm - 1);
                             listBoxSurvey.Items.Insert(indexFromSecondForm - 1, newElem.information);
                             listBoxQuestions.Items.Insert(indexFromSecondForm - 1, newElem.firstQuestion + " " + newElem.secondQuestion);
                             indexFromSecondForm = 0;
@@ -333,7 +333,7 @@ namespace TALab3
                 {
                     listBoxSurvey.Items.RemoveAt(index);
                     listBoxQuestions.Items.RemoveAt(index);
-                    LinkedList.RemoveAt(studentList, index);
+                    LinkedListNode.RemoveAt(studentList, index);
                 }
                 catch (ArgumentOutOfRangeException ex)
                 {

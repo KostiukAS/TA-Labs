@@ -2,7 +2,7 @@
 {
     public class WorkWithLists
     {
-        public static void ReadListOfStudents(string path, LinkedList studentList)
+        public static void ReadListOfStudents(string path, LinkedList<Node> studentList)
         {
             try
             {
@@ -14,9 +14,9 @@
                     MessageBox.Show("File does not contains students");
                 }
 
-                while (line != null)
-                {
-                    LinkedList.Add(studentList, new Node(line));
+                while (line != null) 
+                { 
+                    LinkedListNode.Add(studentList, new Node(line));
                     line = sr.ReadLine();
                 }
 
@@ -33,30 +33,23 @@
             }
         }
 
-        public static void generateArrayOfQuestions(LinkedList listOfQuestions)
+        public static void generateArrayOfQuestions(LinkedList<string> listOfQuestions)
         {
             Random random = new Random();
             
             try
             {
-                var readQuestions = new LinkedList();
-                
                 StreamReader sr = new StreamReader("..//..//..//Questions.txt");
                 var line = sr.ReadLine();
 
                 while (line != null)
                 {
-                    LinkedList.StrAdd(readQuestions, line);
+                    var index = random.Next(listOfQuestions.length);
+                    LinkedListString.AddAt(listOfQuestions, line, index);
                     line = sr.ReadLine();
                 }
 
                 sr.Close();
-
-                for (int i = 0; i < readQuestions.strNumberOfElements; i++) 
-                { 
-                    var r = random.Next(readQuestions.strNumberOfElements);
-                    LinkedList.StrAdd(listOfQuestions, readQuestions.listString[r]);
-                }
             }
             catch (NullReferenceException ex)
             {
