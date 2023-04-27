@@ -30,7 +30,7 @@
             next_point.next = newObj;
             next_point.next.next = null;
         }
-        
+
         public static void AddAt(LinkedNodes head, LinkedNodes newObj, int index)
         {
             if (index < 0)
@@ -64,7 +64,7 @@
                 next_point.next = newObj;
             }
         }
-        
+
         public static void RemoveLast(LinkedNodes head)
         {
             LinkedNodes next_point = head;

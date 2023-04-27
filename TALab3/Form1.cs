@@ -1,5 +1,3 @@
-using System;
-using System.Reflection;
 using TALab3.Data;
 
 namespace TALab3
@@ -14,7 +12,7 @@ namespace TALab3
 
         LinkedListNode studentList = new();
         LinkedListString listOfQuestions = new();
-        public LinkedNodes head = new();
+        LinkedNodes head = new();
         LinkedNodes next_point = new();
 
         bool isFirstMethod = false;
