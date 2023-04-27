@@ -1,3 +1,5 @@
+using System;
+using System.Reflection;
 using TALab3.Data;
 
 namespace TALab3
@@ -12,7 +14,7 @@ namespace TALab3
 
         LinkedListNode studentList = new();
         LinkedListString listOfQuestions = new();
-        LinkedNodes head = new();
+        public LinkedNodes head = new();
         LinkedNodes next_point = new();
 
         bool isFirstMethod = false;
@@ -25,6 +27,8 @@ namespace TALab3
         private void btnGroup1_Click(object sender, EventArgs e)
         {
             listBoxStudents.Items.Clear();
+            listBoxSurvey.Items.Clear();
+            listBoxQuestions.Items.Clear();
             LinkedListNode.Clear(studentList);
 
             WorkWithLists.ReadListOfStudents("..//..//..//Group 1.txt", studentList);
@@ -45,6 +49,8 @@ namespace TALab3
         private void btnGroup2_Click(object sender, EventArgs e)
         {
             listBoxStudents.Items.Clear();
+            listBoxSurvey.Items.Clear();
+            listBoxQuestions.Items.Clear();
             LinkedListNode.Clear(studentList);
 
             WorkWithLists.ReadListOfStudents("..//..//..//Group 2.txt", studentList);
@@ -65,6 +71,8 @@ namespace TALab3
         private void btnGroup3_Click(object sender, EventArgs e)
         {
             listBoxStudents.Items.Clear();
+            listBoxSurvey.Items.Clear();
+            listBoxQuestions.Items.Clear();
             LinkedListNode.Clear(studentList);
 
             WorkWithLists.ReadListOfStudents("..//..//..//Group 3.txt", studentList);
@@ -85,6 +93,8 @@ namespace TALab3
         private void btnClearListOfStudents_Click(object sender, EventArgs e)
         {
             listBoxStudents.Items.Clear();
+            listBoxSurvey.Items.Clear();
+            listBoxQuestions.Items.Clear();
             LinkedListNode.Clear(studentList);
         }
 
@@ -96,7 +106,7 @@ namespace TALab3
             isFirstMethod = true;
             isSecondMethod = false;
 
-            if (studentList.length == 0)
+            if (listBoxStudents.Items.Count == 0)
             {
                 MessageBox.Show("List of students is empty!");
                 return;
@@ -145,7 +155,7 @@ namespace TALab3
             isFirstMethod = false;
             isSecondMethod = true;
 
-            if (studentList.length == 0)
+            if (listBoxStudents.Items.Count == 0)
             {
                 MessageBox.Show("List of students is empty!");
                 return;
@@ -197,7 +207,10 @@ namespace TALab3
             else if (studentList.length == 0)
             {
                 MessageBox.Show("Generate List of students firstly!");
+                return;
             }
+
+            Random rnd = new Random();
 
             if (isFirstMethod)
             {
@@ -224,8 +237,37 @@ namespace TALab3
                         if (iter == 0)
                         {
                             newObj.PIB = listBoxStudents.Items[i].ToString();
-                            newObj.FirstQuestion = listOfQuestions.list[indexFromSecondForm - 1];
-                            newObj.SecondQuestion = listOfQuestions.list[indexFromSecondForm - 1];
+                            newObj.FirstQuestion = listOfQuestions.list[rnd.Next(listOfQuestions.length)];
+                            newObj.SecondQuestion = listOfQuestions.list[rnd.Next(listOfQuestions.length)];
+
+                            if (indexFromSecondForm != (listBoxSurvey.Items.Count + 1))
+                            {
+                                LinkedNodes next_point = head;
+
+                                for (int k = 0; k < (indexFromSecondForm - 1); k++)
+                                {
+                                    next_point = next_point.next;
+                                }
+
+                                next_point.FirstQuestion = newObj.SecondQuestion;
+
+                                listBoxQuestions.Items.RemoveAt(indexFromSecondForm - 1);
+                                listBoxQuestions.Items.Insert(indexFromSecondForm - 1, next_point.FirstQuestion + " " + next_point.SecondQuestion);
+                            }
+                            if (indexFromSecondForm != 1)
+                            {
+                                LinkedNodes next_point = head;
+
+                                for (int k = 0; k < (indexFromSecondForm - 2); k++)
+                                {
+                                    next_point = next_point.next;
+                                }
+
+                                next_point.SecondQuestion = newObj.FirstQuestion;
+
+                                listBoxQuestions.Items.RemoveAt(indexFromSecondForm - 2);
+                                listBoxQuestions.Items.Insert(indexFromSecondForm - 2, next_point.FirstQuestion + " " + next_point.SecondQuestion);
+                            }
                             LinkedNodes.AddAt(head, newObj, indexFromSecondForm - 1);
                             listBoxSurvey.Items.Insert(indexFromSecondForm - 1, newObj.PIB);
                             listBoxQuestions.Items.Insert(indexFromSecondForm - 1, newObj.FirstQuestion + " " + newObj.SecondQuestion);
@@ -262,26 +304,40 @@ namespace TALab3
                             iter--;
                         }
                         if (iter == 0)
-                        {
+                        {                           
                             newElem.information = listBoxStudents.Items[i].ToString();
-                            newElem.firstQuestion = listOfQuestions.list[indexFromSecondForm - 1];
-                            newElem.secondQuestion = listOfQuestions.list[indexFromSecondForm - 1];
+                            newElem.firstQuestion = listOfQuestions.list[rnd.Next(listOfQuestions.length)];
+                            newElem.secondQuestion = listOfQuestions.list[rnd.Next(listOfQuestions.length)];
                             if (indexFromSecondForm == 1)
                             {
                                 newElem.pointer = studentList.list[indexFromSecondForm];
+                                studentList.list[indexFromSecondForm - 1].firstQuestion = newElem.secondQuestion;
                             }
                             else if (indexFromSecondForm == (listBoxSurvey.Items.Count + 1))
                             {
                                 newElem.pointer = null;
                                 studentList.list[indexFromSecondForm - 2].pointer = newElem;
-                                newElem.firstQuestion = listOfQuestions.list[indexFromSecondForm];
-                                newElem.secondQuestion = listOfQuestions.list[indexFromSecondForm + 1];
+                                studentList.list[indexFromSecondForm - 2].secondQuestion = newElem.firstQuestion;
                             }
                             else
                             {
                                 newElem.pointer = studentList.list[indexFromSecondForm];
                                 studentList.list[indexFromSecondForm - 2].pointer = newElem;
-                            }                            
+                                studentList.list[indexFromSecondForm - 2].secondQuestion = newElem.firstQuestion;
+                                studentList.list[indexFromSecondForm - 1].firstQuestion = newElem.secondQuestion;
+                            }
+                            if (indexFromSecondForm != (listBoxSurvey.Items.Count + 1))
+                            {
+                                listBoxQuestions.Items.RemoveAt(indexFromSecondForm - 1);
+                                listBoxQuestions.Items.Insert(indexFromSecondForm - 1,
+                                    studentList.list[indexFromSecondForm - 1].firstQuestion + " " + studentList.list[indexFromSecondForm - 1].secondQuestion);
+                            }
+                            if (indexFromSecondForm != 1)
+                            {
+                                listBoxQuestions.Items.RemoveAt(indexFromSecondForm - 2);
+                                listBoxQuestions.Items.Insert(indexFromSecondForm - 2,
+                                    studentList.list[indexFromSecondForm - 2].firstQuestion + " " + studentList.list[indexFromSecondForm - 2].secondQuestion);
+                            }
                             LinkedListNode.AddAt(studentList, newElem, indexFromSecondForm - 1);
                             listBoxSurvey.Items.Insert(indexFromSecondForm - 1, newElem.information);
                             listBoxQuestions.Items.Insert(indexFromSecondForm - 1, newElem.firstQuestion + " " + newElem.secondQuestion);
@@ -308,20 +364,44 @@ namespace TALab3
                 MessageBox.Show("Item is not choosen!");
                 return;
             }
+            if (listBoxQuestions.Items.Count == 1)
+            {
+                listBoxStudents.Items.Clear();
+            }
 
             if (isFirstMethod)
             {
                 int index = listBoxSurvey.SelectedIndex;
+                int lenOfList = listBoxSurvey.Items.Count;
 
                 try
                 {
                     LinkedNodes.RemoveAt(head, index, listBoxSurvey.Items.Count);
                     listBoxSurvey.Items.RemoveAt(index);
-                    listBoxQuestions.Items.RemoveAt(index);                    
+                    listBoxQuestions.Items.RemoveAt(index);
                 }
                 catch (ArgumentOutOfRangeException ex)
                 {
                     MessageBox.Show("Exception: " + ex);
+                }
+
+                if (index == 0)
+                {
+                    return;
+                }
+
+                LinkedNodes next_point = head;
+
+                for (int i = 0; i < (index - 1); i++)
+                {
+                    next_point = next_point.next;
+                }
+
+                if (index != (lenOfList - 1))
+                {
+                    next_point.next.FirstQuestion = next_point.SecondQuestion;
+                    listBoxQuestions.Items.RemoveAt(index);
+                    listBoxQuestions.Items.Insert(index, next_point.next.FirstQuestion + " " + next_point.next.SecondQuestion);
                 }
             }
             else if (isSecondMethod)
@@ -351,6 +431,9 @@ namespace TALab3
                 else
                 {
                     studentList.list[index - 1].pointer = studentList.list[index];
+                    studentList.list[index].firstQuestion = studentList.list[index - 1].secondQuestion;
+                    listBoxQuestions.Items.RemoveAt(index);
+                    listBoxQuestions.Items.Insert(index, studentList.list[index].firstQuestion + " " + studentList.list[index].secondQuestion);
                 }
             }
             else
